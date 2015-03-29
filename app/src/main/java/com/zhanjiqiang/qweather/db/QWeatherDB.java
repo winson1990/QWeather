@@ -71,7 +71,7 @@ public class QWeatherDB {
         if (cursor.moveToFirst()){
             do {
                 Province province = new Province();
-                province.setProvinceId(cursor.getInt(cursor.getColumnIndex("id")));
+                province.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
                 province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
                 provinceList.add(province);
@@ -105,7 +105,7 @@ public class QWeatherDB {
         if (cursor.moveToFirst()){
             do {
                 City city = new City();
-                city.setCityId(cursor.getInt(cursor.getColumnIndex("id")));
+                city.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 city.setCityName(cursor.getString(cursor.getColumnIndex("city_name")));
                 city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
                 cityList.add(city);
@@ -141,7 +141,7 @@ public class QWeatherDB {
         if (cursor.moveToFirst()){
             do {
                 County county = new County();
-                county.setCountyId(cursor.getInt(cursor.getColumnIndex("id")));
+                county.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
                 county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
                 countyList.add(county);

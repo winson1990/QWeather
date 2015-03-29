@@ -8,16 +8,16 @@ package com.zhanjiqiang.qweather.model;
  * @describe:城市的实体类
  */
 public class Province {
-    private int provinceId;
+    private int id;
     private String provinceName;
     private String provinceCode;
 
-    public int getProvinceId() {
-        return provinceId;
+    public int getId() {
+        return id;
     }
 
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getProvinceName() {

@@ -8,16 +8,16 @@ package com.zhanjiqiang.qweather.model;
  * @describe:TODO
  */
 public class City {
-    private int cityId;
+    private int id;
     private String cityName;
     private String cityCode;
-
-    public int getCityId() {
-        return cityId;
+    private int provinceId;
+    public int getId() {
+        return id;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCityName() {
@@ -34,5 +34,13 @@ public class City {
 
     public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
+    }
+
+    public int getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
     }
 }
