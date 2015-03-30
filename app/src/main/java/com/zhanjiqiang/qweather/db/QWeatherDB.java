@@ -32,7 +32,7 @@ public class QWeatherDB {
     private static QWeatherDB mQWeatherDB;
     private SQLiteDatabase mDatabase;
     private QWeatherDB(Context context){
-        QWeatherOpenHelper mHelper = new QWeatherOpenHelper(UIUtils.getContext(),DB_NAME,null,VERSION);
+        QWeatherOpenHelper mHelper = new QWeatherOpenHelper(context,DB_NAME,null,VERSION);
         mDatabase = mHelper.getWritableDatabase();
     }
 
@@ -43,7 +43,7 @@ public class QWeatherDB {
      */
     public synchronized static QWeatherDB getInstance(Context context){
         if (mQWeatherDB == null){
-            mQWeatherDB = new QWeatherDB(UIUtils.getContext());
+            mQWeatherDB = new QWeatherDB(context);
         }
         return mQWeatherDB;
     }
@@ -91,6 +91,7 @@ public class QWeatherDB {
             ContentValues values = new ContentValues();
             values.put("city_name",city.getCityName());
             values.put("city_code",city.getCityCode());
+            values.put("province_id",city.getProvinceId());
             mDatabase.insert("City",null,values);
         }
     }
@@ -108,6 +109,7 @@ public class QWeatherDB {
                 city.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 city.setCityName(cursor.getString(cursor.getColumnIndex("city_name")));
                 city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
+                city.setProvinceId(provinceId);
                 cityList.add(city);
             }while (cursor.moveToNext());
         }
@@ -126,6 +128,7 @@ public class QWeatherDB {
             ContentValues values = new ContentValues();
             values.put("county_name",county.getCountyName());
             values.put("county_code", county.getCountyCode());
+            values.put("city_id",county.getCityId());
             mDatabase.insert("County",null,values);
         }
     }
@@ -144,6 +147,7 @@ public class QWeatherDB {
                 county.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
                 county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
+                county.setCityId(cityId);
                 countyList.add(county);
             }while (cursor.moveToNext());
         }

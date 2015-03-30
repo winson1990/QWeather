@@ -21,7 +21,6 @@ import com.zhanjiqiang.qweather.utils.HttpCallbackListener;
 import com.zhanjiqiang.qweather.utils.HttpUtils;
 import com.zhanjiqiang.qweather.utils.UIUtils;
 import com.zhanjiqiang.qweather.utils.Utility;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,15 +63,12 @@ public class ChooseAreaActivity extends Activity {
      * 选中的城市
      */
     private City selectCity;
-    /**
-     * 选中的县
-     */
-    private County selectCounty;
 
     /**
      * 当前选中的
      */
     private int currentLevel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,10 +83,14 @@ public class ChooseAreaActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (currentLevel == LEVEL_PROVINCE){
                     selectProvince = provinceList.get(position);
-                    //TODO;
+                    queryCity();
+                }else if (currentLevel == LEVEL_CITY){
+                    selectCity = citysList.get(position);
+                    queryCounty();
                 }
             }
         });
+        queryProvince();
     }
 
     /**
@@ -99,6 +99,7 @@ public class ChooseAreaActivity extends Activity {
     private void queryProvince(){
         provinceList = weatherDB.loadProvince();
         if (provinceList.size() > 0){
+
             dataList.clear();
             for (Province province : provinceList){
                 dataList.add(province.getProvinceName());
@@ -151,13 +152,13 @@ public class ChooseAreaActivity extends Activity {
     private void queryFromServer(final String code,final String type) {
         String address;
         if (!TextUtils.isEmpty(code)){
-            address = "http://flash.weather.com.cn/wmaps/xml/"+code+".xml";
+            address = "http://www.weather.com.cn/data/list3/city"+code+".xml";
             Log.d("ChooseAreaActivity",address);
         }else{
-            address = "http://flash.weather.com.cn/wmaps/xml/china.xml";
+            address = "http://www.weather.com.cn/data/list3/city.xml";
             Log.d("ChooseAreaActivity",address);
         }
-        //TODO
+        showProgressDialog();
         HttpUtils.sendHttpRequest(address,new HttpCallbackListener() {
             @Override
             public void onFinsh(String response) {
@@ -174,7 +175,7 @@ public class ChooseAreaActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //TODO
+                            closeProgressDialog();
                             if ("province".equals(type)){
                                 queryProvince();
                             }else if ("city".equals(type)){
@@ -198,5 +199,31 @@ public class ChooseAreaActivity extends Activity {
                 });
             }
         });
+    }
+
+    private void closeProgressDialog() {
+        if (dialog != null){
+            dialog.dismiss();
+        }
+    }
+
+    private void showProgressDialog() {
+        if (dialog == null){
+            dialog = new ProgressDialog(this);
+            dialog.setMessage("正在加载...");
+            dialog.setCanceledOnTouchOutside(false);
+        }
+        dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+       if (currentLevel == LEVEL_COUNTY){
+           queryCity();
+       }else if (currentLevel == LEVEL_CITY){
+           queryProvince();
+       }else {
+           finish();
+       }
     }
 }

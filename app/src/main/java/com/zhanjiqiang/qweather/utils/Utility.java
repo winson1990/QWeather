@@ -28,8 +28,8 @@ public class Utility {
                 for (String p : allProvince){
                     String [] array = p.split("\\|");
                     Province province = new Province();
-                    province.setProvinceName(array[0]);
-                    province.setProvinceCode(array[1]);
+                    province.setProvinceName(array[1]);
+                    province.setProvinceCode(array[0]);
                     weatherDB.saveProvince(province);
                 }
                 return true;
@@ -44,15 +44,15 @@ public class Utility {
      * @param response
      * @return
      */
-    public synchronized static boolean handlerCityResponse(QWeatherDB weatherDB, String response,int provinceId){
+    public static boolean handlerCityResponse(QWeatherDB weatherDB, String response,int provinceId){
         if (!TextUtils.isEmpty(response)){
             String[] allCity = response.split(",");
-            if (allCity != null && allCity.length <0){
+            if (allCity != null && allCity.length > 0){
                 for (String c : allCity){
                     String [] array = c.split("\\|");
                     City city = new City();
-                    city.setCityName(array[0]);
-                    city.setCityCode(array[1]);
+                    city.setCityName(array[1]);
+                    city.setCityCode(array[0]);
                     city.setProvinceId(provinceId);
                     weatherDB.saveCity(city);
                 }
@@ -69,15 +69,15 @@ public class Utility {
      * @param cityId
      * @return
      */
-    public synchronized static boolean handlerCountyResponse(QWeatherDB weatherDB, String response, int cityId){
+    public static boolean handlerCountyResponse(QWeatherDB weatherDB, String response, int cityId){
         if (!TextUtils.isEmpty(response)){
             String[] allCounty = response.split(",");
             if (allCounty != null && allCounty.length > 0){
                 for (String c : allCounty){
                     String [] array = c.split("\\|");
                     County county = new County();
-                    county.setCountyName(array[0]);
-                    county.setCountyCode(array[1]);
+                    county.setCountyName(array[1]);
+                    county.setCountyCode(array[0]);
                     county.setCityId(cityId);
                     weatherDB.saveCounty(county);
                 }

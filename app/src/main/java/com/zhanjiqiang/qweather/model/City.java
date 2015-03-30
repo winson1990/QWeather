@@ -5,7 +5,7 @@ package com.zhanjiqiang.qweather.model;
  * @className:City
  * @author:彳亍
  * @:2015/3/29 0029 22:39
- * @describe:TODO
+ * @describe:城市的实体类
  */
 public class City {
     private int id;

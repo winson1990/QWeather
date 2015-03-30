@@ -5,7 +5,7 @@ package com.zhanjiqiang.qweather.model;
  * @className:County
  * @author:彳亍
  * @:2015/3/29 0029 22:41
- * @describe:TODO
+ * @describe:县的实体类
  */
 public class County {
     private int id;
