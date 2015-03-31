@@ -1,11 +1,13 @@
 package com.zhanjiqiang.qweather.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +25,7 @@ import com.zhanjiqiang.qweather.utils.Utility;
  * @:2015/3/30 0030 23:15
  * @describe:天气界面的活动
  */
-public class WeatherActivity extends Activity {
+public class WeatherActivity extends Activity implements View.OnClickListener{
     private LinearLayout weatherInfoLayout;
     /**
      * 显示城市名称
@@ -49,6 +51,16 @@ public class WeatherActivity extends Activity {
      * 显示最高温度
      */
     private TextView highTemperature;
+
+    /**
+     * 返回城市选择页的按钮
+     */
+    private ImageButton home;
+
+    /**
+     * 刷新天气的按钮
+     */
+    private ImageButton refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +89,10 @@ public class WeatherActivity extends Activity {
         }else {
             showWeather();
         }
+        home = (ImageButton) findViewById(R.id.weather_swit_city);
+        refresh = (ImageButton) findViewById(R.id.weather_refresh);
+        home.setOnClickListener(this);
+        refresh.setOnClickListener(this);
     }
 
     /**
@@ -147,5 +163,32 @@ public class WeatherActivity extends Activity {
                 });
             }
         });
+    }
+
+    /**
+     * 按钮的点击事件
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.weather_swit_city:
+                Intent intent = new Intent(UIUtils.getContext(),ChooseAreaActivity.class);
+                intent.putExtra("from_weather_activity",true);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.weather_refresh:
+                publishTime.setText("同步中...");
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(UIUtils.getContext());
+                String weatherCode = preferences.getString("weather_code","");
+                if (!TextUtils.isEmpty(weatherCode)){
+                    queryWeatherInfo(weatherCode);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
