@@ -27,6 +27,9 @@ import com.zhanjiqiang.qweather.utils.HttpCallbackListener;
 import com.zhanjiqiang.qweather.utils.HttpUtils;
 import com.zhanjiqiang.qweather.utils.UIUtils;
 import com.zhanjiqiang.qweather.utils.Utility;
+
+import net.youmi.android.AdManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +94,7 @@ public class ChooseAreaActivity extends Activity {
      * View初始化
      */
     public void initView() {
+        AdManager.getInstance(UIUtils.getContext()).init("06eedebfa94c45d3","762480ea510a2096",false);
         isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity",false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences.getBoolean("city_selected",false) && !isFromWeatherActivity){

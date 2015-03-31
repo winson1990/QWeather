@@ -19,6 +19,9 @@ import com.zhanjiqiang.qweather.utils.HttpUtils;
 import com.zhanjiqiang.qweather.utils.UIUtils;
 import com.zhanjiqiang.qweather.utils.Utility;
 
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+
 /**
  * @packageName:com.zhanjiqiang.qweather.activity
  * @className:WeatherActivity
@@ -74,6 +77,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
      */
     public void initView() {
         setContentView(R.layout.weather_layout);
+        AdView adView = new AdView(UIUtils.getContext(), AdSize.FIT_SCREEN);
+        LinearLayout adLayout = (LinearLayout) findViewById(R.id.aDLayout);
+        adLayout.addView(adView);
         weatherInfoLayout = (LinearLayout) findViewById(R.id.weather_info_layout);
         cityName = (TextView) findViewById(R.id.weather_city_name);
         publishTime = (TextView) findViewById(R.id.weather_publish_data);
