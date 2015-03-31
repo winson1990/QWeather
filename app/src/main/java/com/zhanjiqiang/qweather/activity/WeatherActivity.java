@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhanjiqiang.qweather.R;
+import com.zhanjiqiang.qweather.service.AutoUpdataService;
 import com.zhanjiqiang.qweather.utils.HttpCallbackListener;
 import com.zhanjiqiang.qweather.utils.HttpUtils;
 import com.zhanjiqiang.qweather.utils.UIUtils;
@@ -99,7 +100,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
      * 从SharedPreferences文件中读取存数的天气信息,并显示在界面上.
      */
     public void showWeather() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(UIUtils.getContext());
         cityName.setText(preferences.getString("city_name",""));
         publishTime.setText("今天"+preferences.getString("publish_time","")+"发布");
         data.setText(preferences.getString("data",""));
@@ -108,6 +109,8 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         highTemperature.setText(preferences.getString("high_temperature",""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityName.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(UIUtils.getContext(), AutoUpdataService.class);
+        startService(intent);
     }
 
     /**

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @className:QWeatherOpenHelper
  * @author:彳亍
  * @:2015/3/29 0029 22:18
- * @describe:TODO
+ * @describe:建表类
  */
 public class QWeatherOpenHelper extends SQLiteOpenHelper{
     /**

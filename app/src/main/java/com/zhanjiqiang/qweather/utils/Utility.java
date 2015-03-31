@@ -27,8 +27,8 @@ import java.util.Locale;
 public class Utility {
     /**
      *  解析和处理服务器返回的省级数据
-     * @param weatherDB
-     * @param response
+     * @param weatherDB 数据库
+     * @param response 返回的值
      * @return
      */
     public synchronized static boolean handlerProvinceResponse(QWeatherDB weatherDB, String response){
@@ -50,7 +50,7 @@ public class Utility {
 
     /**
      * 解析和处理服务器返回的市级数据
-     * @param weatherDB
+     * @param weatherDB 数据库
      * @param response
      * @return
      */
@@ -74,7 +74,7 @@ public class Utility {
 
     /**
      * 解析和处理服务器返回的县级数据
-     * @param weatherDB
+     * @param weatherDB 数据库
      * @param response
      * @param cityId
      * @return
@@ -112,12 +112,6 @@ public class Utility {
             String lowTemperature = weatherInfo.getString("temp2");
             String highTemperature = weatherInfo.getString("temp1");
             String weather = weatherInfo.getString("weather");
-            System.out.print(cityName);
-            System.out.print(weatherCode);
-            System.out.print(publishTime);
-            System.out.print(lowTemperature);
-            System.out.print(highTemperature);
-            System.out.print(weather);
             saveWeatherInfo(UIUtils.getContext(), cityName, weatherCode, publishTime, lowTemperature, highTemperature, weather);
         } catch (JSONException e) {
             e.printStackTrace();
