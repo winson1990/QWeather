@@ -2,10 +2,16 @@ package com.zhanjiqiang.qweather.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -29,7 +35,7 @@ import java.util.List;
  * @className:ChooseAreaActivity
  * @author:彳亍
  * @:2015/3/30 0030 01:06
- * @describe: 省县市数据的活动
+ * @describe: 省市县三级列表的活动
  */
 public class ChooseAreaActivity extends Activity {
     public static final int LEVEL_PROVINCE = 0;
@@ -42,6 +48,7 @@ public class ChooseAreaActivity extends Activity {
     private ArrayAdapter<String> adapter;
     private QWeatherDB weatherDB;
     private List<String> dataList = new ArrayList<String>();
+
 
     /**
      * 省列表
@@ -72,10 +79,36 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
+    }
+
+    /**
+     * View初始化
+     */
+    public void initView() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean("city_selected",false)){
+            Intent intent = new Intent(UIUtils.getContext(),WeatherActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         setContentView(R.layout.choose_area);
         content = (ListView) findViewById(R.id.area_content);
         title = (TextView) findViewById(R.id.area_title);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
+        adapter = new ArrayAdapter<String>(UIUtils.getContext(),android.R.layout.simple_list_item_1,dataList){
+            @Override
+            /**
+             * 设置文本居中对齐
+             */
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position,convertView,parent);
+                TextView textView = (TextView) view;
+                textView.setGravity(Gravity.CENTER);
+                textView.setTextColor(Color.BLACK);
+                return view;
+            }
+        };
         content.setAdapter(adapter);
         weatherDB = QWeatherDB.getInstance(this);
         content.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -87,6 +120,12 @@ public class ChooseAreaActivity extends Activity {
                 }else if (currentLevel == LEVEL_CITY){
                     selectCity = citysList.get(position);
                     queryCounty();
+                }else if (currentLevel == LEVEL_COUNTY){
+                    String countyCode = countyList.get(position).getCountyCode();
+                    Intent intent = new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+                    intent.putExtra("county_code",countyCode);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -99,7 +138,6 @@ public class ChooseAreaActivity extends Activity {
     private void queryProvince(){
         provinceList = weatherDB.loadProvince();
         if (provinceList.size() > 0){
-
             dataList.clear();
             for (Province province : provinceList){
                 dataList.add(province.getProvinceName());
@@ -149,7 +187,7 @@ public class ChooseAreaActivity extends Activity {
         }
     }
 
-    private void queryFromServer(final String code,final String type) {
+    public void queryFromServer(final String code,final String type) {
         String address;
         if (!TextUtils.isEmpty(code)){
             address = "http://www.weather.com.cn/data/list3/city"+code+".xml";
@@ -193,7 +231,7 @@ public class ChooseAreaActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //TODO
+                        closeProgressDialog();
                         Toast.makeText(UIUtils.getContext(),"加载失败,请重试!",Toast.LENGTH_SHORT).show();
                     }
                 });

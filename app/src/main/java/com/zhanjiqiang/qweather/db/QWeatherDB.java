@@ -32,7 +32,7 @@ public class QWeatherDB {
     private static QWeatherDB mQWeatherDB;
     private SQLiteDatabase mDatabase;
     private QWeatherDB(Context context){
-        QWeatherOpenHelper mHelper = new QWeatherOpenHelper(context,DB_NAME,null,VERSION);
+        QWeatherOpenHelper mHelper = new QWeatherOpenHelper(UIUtils.getContext(),DB_NAME,null,VERSION);
         mDatabase = mHelper.getWritableDatabase();
     }
 
@@ -43,7 +43,7 @@ public class QWeatherDB {
      */
     public synchronized static QWeatherDB getInstance(Context context){
         if (mQWeatherDB == null){
-            mQWeatherDB = new QWeatherDB(context);
+            mQWeatherDB = new QWeatherDB(UIUtils.getContext());
         }
         return mQWeatherDB;
     }
